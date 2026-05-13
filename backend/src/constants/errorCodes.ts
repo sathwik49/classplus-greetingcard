@@ -1,0 +1,16 @@
+const errorCodes = {
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  BAD_REQUEST: "BAD_REQUEST",
+  AUTH_ERROR: "AUTH_ERROR",
+  FORBIDDEN: "FORBIDDEN",
+  NOT_FOUND: "NOT_FOUND",
+  CONFLICT: "CONFLICT",
+  RATE_LIMIT_ERROR: "RATE_LIMIT_ERROR",
+  DATABASE_ERROR: "DATABASE_ERROR",
+  INVALID_FORMAT: "INVALID_FORMAT",
+  SERVER_ERROR: "SERVER_ERROR",
+} as const;
+
+export type ErrorCode = keyof typeof errorCodes;
+
+export default errorCodes;
