@@ -29,7 +29,7 @@ export default function CardPreview() {
 
   const handleShare = async () => {
     if (isPremiumLocked) {
-      toast.error("Upgrade to Pro to download this premium template");
+      toast.error("Upgrade to Pro to share this premium template");
       navigate("/upgrade");
       return;
     }
@@ -65,12 +65,14 @@ export default function CardPreview() {
         },
       });
 
+      toast.dismiss(loadingToast);
+
       canvas.toBlob(async (blob) => {
-        toast.dismiss(loadingToast);
         if (!blob) return;
 
         const file = new File([blob], `card-${id}.png`, { type: "image/png" });
 
+        // Try sharing file first (mobile)
         if (navigator.share && navigator.canShare?.({ files: [file] })) {
           try {
             await navigator.share({
@@ -78,11 +80,32 @@ export default function CardPreview() {
               title: "My Greeting Card",
               text: "Check out this card I created!",
             });
+            return;
           } catch (e) {
-            downloadFallback(blob);
+            if ((e as DOMException).name === "AbortError") return; // user cancelled, do nothing
           }
-        } else {
-          downloadFallback(blob);
+        }
+
+        // Try sharing just URL/text (desktop Chrome, etc.)
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: "My Greeting Card",
+              text: "Check out this greeting card I made!",
+              url: window.location.href,
+            });
+            return;
+          } catch (e) {
+            if ((e as DOMException).name === "AbortError") return; // user cancelled, do nothing
+          }
+        }
+
+        // Last resort: copy link to clipboard
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          toast.success("Link copied to clipboard!");
+        } catch {
+          toast.error("Sharing not supported on this browser.");
         }
       }, "image/png");
     } catch (err) {
