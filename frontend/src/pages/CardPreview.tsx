@@ -72,7 +72,6 @@ export default function CardPreview() {
 
         const file = new File([blob], `card-${id}.png`, { type: "image/png" });
 
-        // Try sharing file first (mobile)
         if (navigator.share && navigator.canShare?.({ files: [file] })) {
           try {
             await navigator.share({
@@ -82,11 +81,9 @@ export default function CardPreview() {
             });
             return;
           } catch (e) {
-            if ((e as DOMException).name === "AbortError") return; // user cancelled, do nothing
+            if ((e as DOMException).name === "AbortError") return;
           }
         }
-
-        // Try sharing just URL/text (desktop Chrome, etc.)
         if (navigator.share) {
           try {
             await navigator.share({
@@ -96,11 +93,9 @@ export default function CardPreview() {
             });
             return;
           } catch (e) {
-            if ((e as DOMException).name === "AbortError") return; // user cancelled, do nothing
+            if ((e as DOMException).name === "AbortError") return;
           }
         }
-
-        // Last resort: copy link to clipboard
         try {
           await navigator.clipboard.writeText(window.location.href);
           toast.success("Link copied to clipboard!");
@@ -112,15 +107,6 @@ export default function CardPreview() {
       toast.dismiss(loadingToast);
       toast.error("Export failed. Please try again.");
     }
-  };
-
-  const downloadFallback = (blob: Blob) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `greeting-card-${id}.png`;
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   if (isLoading)
