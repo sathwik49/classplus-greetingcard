@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,7 +13,6 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import type { RegisterResponseType } from "../../api/types";
-import { baseURL } from "../../api/baseUrl";
 import { Loader2, Camera } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { AUTH_REDIRECT_URL } from "../../api/endPoints";
@@ -89,9 +88,9 @@ export default function SignUp() {
     );
   };
 
-  const handleGoogleSignIn = () => {
-    window.location.href = `${baseURL}/auth/google`;
-  };
+  // const handleGoogleSignIn = () => {
+  //   window.location.href = `${baseURL}/auth/google`;
+  // };
 
   return (
     <div className="bg-white w-full max-w-md p-8 rounded-lg flex flex-col space-y-2 shadow-xl">
@@ -192,13 +191,13 @@ export default function SignUp() {
         </button>
       </form>
 
-      <button
+      {/* <button
         onClick={handleGoogleSignIn}
         className="w-full px-4 py-2 rounded-lg mt-2 cursor-pointer flex justify-center items-center gap-3 border hover:bg-gray-200"
       >
         <FcGoogle size={19} />
         <span>Sign Up with Google</span>
-      </button>
+      </button>  */}
 
       <p className="text-center">
         Already have an account?{" "}
