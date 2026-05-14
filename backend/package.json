@@ -10,7 +10,7 @@
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/seeder.ts",
     "build": "pnpm run db:generate && tsc -b",
-    "start": "node dist/index.js"
+    "start": "pnpm run db:push && node dist/index.js"
   },
   "keywords": [],
   "author": "",
